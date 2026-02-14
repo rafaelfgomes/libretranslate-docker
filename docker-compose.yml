@@ -19,6 +19,7 @@ services:
     volumes:
       - keys:/app/db
       - models:/home/libretranslate/.local:rw
+      - /etc/localtime:/etc/localtime:ro
     networks:
       external:
         ipv4_address: ${LIBRETRANSLATE_IP}
