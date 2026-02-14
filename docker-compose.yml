@@ -1,0 +1,27 @@
+services:
+  libretranslate:
+    image: libretranslate/libretranslate
+    container_name: libretranslate
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', './venv/bin/python scripts/healthcheck.py']
+      interval: 10s
+      timeout: 4s
+      retries: 4
+      start_period: 5s
+    tty: true
+    command: --ssl --req-limit 100 --char-limit 500
+    environment:
+      - LT_API_KEYS=true
+      - LT_API_KEYS_DB_PATH=/app/db/api_keys.db
+      - LT_UPDATE_MODELS=true
+    volumes:
+      - ${LIBRETRANSLATE_API_KEYS:-./keys}:/app/db
+      - ${LIBRETRANSLATE_MODELS:-./models}:/home/libretranslate/.local:rw
+    networks:
+      external:
+        ipv4_address: ${LIBRETRANSLATE_IP}
+
+networks:
+  external:
+    name: ${EXTERNAL_NETWORK_NAME}
