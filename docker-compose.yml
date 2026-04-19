@@ -17,18 +17,12 @@ services:
       - LT_UPDATE_MODELS=true
       - LANG=${LANG:-en_US.UTF-8}
     volumes:
-      - keys:/app/db
-      - models:/home/libretranslate/.local:rw
+      - ${LIBRETRANSLATE_KEYS_FOLDER:-./keys}:/app/db
+      - ${LIBRETRANSLATE_MODELS_FOLDER:-./models}:/home/libretranslate/.local:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       external:
         ipv4_address: ${LIBRETRANSLATE_IP}
-
-volumes:
-  keys:
-    name: libretranslate-keys-volume
-  models:
-    name: libretranslate-models-volume
 
 networks:
   external:
