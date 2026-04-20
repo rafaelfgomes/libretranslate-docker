@@ -10,19 +10,25 @@ services:
       retries: 4
       start_period: 5s
     tty: true
-    command: --ssl --req-limit 100 --char-limit 500
+    command: --req-limit 100 --char-limit 500
     environment:
       - LT_API_KEYS=true
       - LT_API_KEYS_DB_PATH=/app/db/api_keys.db
       - LT_UPDATE_MODELS=true
       - LANG=${LANG:-en_US.UTF-8}
     volumes:
-      - ${LIBRETRANSLATE_KEYS_FOLDER:-./keys}:/app/db
-      - ${LIBRETRANSLATE_MODELS_FOLDER:-./models}:/home/libretranslate/.local:rw
+      - keys:/app/db
+      - models:/home/libretranslate/.local:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       external:
         ipv4_address: ${LIBRETRANSLATE_IP}
+
+volumes:
+  keys:
+    name: libretranslate-api-keys
+  models:
+    name: ibretranslate-models
 
 networks:
   external:
